@@ -33,13 +33,13 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void add(String userName, String password) {
+    public void add(String user_name, String password) {
         try (Connection conn = getConnection()) {
             if (conn != null) {
-                logger.logInfo("Adding user: " + userName);
-                String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+                logger.logInfo("Adding user: " + user_name);
+                String sql = "INSERT INTO users (user_name, password) VALUES (?, ?)";
                 PreparedStatement statement = conn.prepareStatement(sql);
-                statement.setString(1, userName);
+                statement.setString(1, user_name);
                 statement.setString(2, password);
                 int rowsInserted = statement.executeUpdate();
                 if (rowsInserted > 0) {
@@ -53,14 +53,13 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-
     @Override
-    public void update(Integer id, String user_Name, String password) {
+    public void update(Integer id, String user_name, String password) {
         try (Connection conn = getConnection()) {
             if (conn != null) {
-                String sql = "UPDATE users SET username = ?, password = ? WHERE id = ?";
+                String sql = "UPDATE users SET user_name = ?, password = ? WHERE id = ?";
                 PreparedStatement statement = conn.prepareStatement(sql);
-                statement.setString(1, user_Name);
+                statement.setString(1, user_name);
                 statement.setString(2, password);
                 statement.setInt(3, id);
                 int rowsUpdated = statement.executeUpdate();
@@ -122,9 +121,9 @@ public class UserRepositoryImpl implements UserRepository {
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                     int userId = resultSet.getInt("id");
-                    String userName = resultSet.getString("username");
+                    String user_Name = resultSet.getString("user_name");
                     String password = resultSet.getString("password");
-                    return new User(userId, userName, password);
+                    return new User(userId, user_Name, password);
                 } else {
                     logger.logInfo("User not found.");
                 }
@@ -145,9 +144,9 @@ public class UserRepositoryImpl implements UserRepository {
                 ResultSet resultSet = statement.executeQuery(sql);
                 while (resultSet.next()) {
                     int userId = resultSet.getInt("id");
-                    String userName = resultSet.getString("username");
+                    String user_Name = resultSet.getString("user_name");
                     String password = resultSet.getString("password");
-                    users.add(new User(userId, userName, password));
+                    users.add(new User(userId, user_Name, password));
                 }
             }
         } catch (SQLException e) {

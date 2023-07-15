@@ -20,20 +20,19 @@ import java.util.List;
 
 public class UserRepositoryImplTest {
     private UserRepository userRepository;
-    String dbFilePath = "src/main/Users.db";
-    private Logger logger;
+    String dbFilePath = "/Users/hamzawalker/Projects/Github_Code_Cool/Object_Oriented_Programming_3rd_Module/BruteForce/src/main/resources/Users.db";
 
 
     @BeforeEach
     public void setup() {
         // Initialize the UserRepositoryImpl with the SQLite database file for testing
         userRepository = new UserRepositoryImpl(dbFilePath, new ConsoleLogger());
-        logger = new ConsoleLogger();
+        Logger logger = new ConsoleLogger();
 
         // Create the users table in the database
         try (Connection conn = getConnection()) {
             if (conn != null) {
-                String createTableSql = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, password TEXT)";
+                String createTableSql = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, user_name TEXT, password TEXT)";
                 logger.logInfo("Creating users table: " + createTableSql);
                 Statement statement = conn.createStatement();
                 statement.execute(createTableSql);
@@ -68,7 +67,7 @@ public class UserRepositoryImplTest {
     @Test
     public void testAddUser() {
         // Create a new database file
-        createDatabase();
+        //createDatabase();
 
         // Add a new user
         userRepository.add("john", "password");
@@ -88,7 +87,7 @@ public class UserRepositoryImplTest {
             Connection connection = DriverManager.getConnection("jdbc:sqlite:" + dbFilePath);
 
             // Define the schema and create the users table
-            String createTableSql = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, username TEXT, password TEXT)";
+            String createTableSql = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, user_name TEXT, password TEXT)";
             PreparedStatement statement = connection.prepareStatement(createTableSql);
             statement.execute();
 
@@ -121,10 +120,10 @@ public class UserRepositoryImplTest {
         userRepository.add("john", "password");
 
         // Delete the user
-        userRepository.delete(1);
+        userRepository.delete(0);
 
         // Try to get the deleted user from the repository
-        User user = userRepository.get(1);
+        User user = userRepository.get(0);
 
         // Verify that the user was deleted successfully
         Assertions.assertNull(user);
@@ -141,7 +140,7 @@ public class UserRepositoryImplTest {
 
         // Verify that both users were retrieved successfully
         Assertions.assertEquals(2, users.size());
-        Assertions.assertEquals("john", users.get(0).userName());
-        Assertions.assertEquals("jane", users.get(1).userName());
+        Assertions.assertEquals("john", users.get(1).user_name());
+        Assertions.assertEquals("jane", users.get(2).user_name()    );
     }
 }
