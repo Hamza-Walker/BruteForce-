@@ -56,12 +56,17 @@ public class UserGeneratorImplTest {
         int count = 5;
         int maxPasswordLength = 10;
 
+        // Mock the password generator behavior
+        Mockito.when(passwordGenerators.get(0).generate(Mockito.anyInt())).thenReturn("password1");
+        Mockito.when(passwordGenerators.get(1).generate(Mockito.anyInt())).thenReturn("password2");
+
         // Generate the users
         List<User> users = userGenerator.generate(count, maxPasswordLength);
 
         // Ensure that each generated user's password length is within the specified range
         for (User user : users) {
             String password = user.password();
+            Assertions.assertNotNull(password); // Ensure password is not null
             Assertions.assertTrue(password.length() >= 1 && password.length() <= maxPasswordLength);
         }
     }
